@@ -8,7 +8,8 @@ const Register = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const {isAuthenticated, setIsAuthenticated} = useContext(userContext);
+  const {isAuthenticated, setIsAuthenticated, loading, setLoading} = useContext(userContext);
+
 
 
   
@@ -16,6 +17,7 @@ const Register = () => {
 
   const submitHandler = async (e) => {
     e.preventDefault();
+    setLoading(true)
 
     try {
       const {data} = await axios.post(`${server}/user/register`, {
@@ -32,10 +34,14 @@ const Register = () => {
       
       toast.success(data.message)
       setIsAuthenticated(true);
+      setLoading(false)
+
     } catch (error) {
       toast.error("error occured")
       console.log(error);
       setIsAuthenticated(false);
+      setLoading(false)
+
     }
     
   };
